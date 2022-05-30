@@ -1,0 +1,11 @@
+.profile__button-container {
+    flex-basis: 394px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+@media screen and (max-width: 1023px) {
+    .profile__button-container {
+        margin: 36px auto 0;
+        flex-basis: 0;
+    }
+}

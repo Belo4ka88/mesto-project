@@ -1,0 +1,14 @@
+.profile__edit-button {
+    width: 24px;
+    height: 24px;
+    background-image: url(../../../images/Vector-pen.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    cursor: pointer;
+    border: 1px solid #FFFFFF;
+}
+
+.profile__edit-button:hover {
+    opacity: 0.5;
+} 
