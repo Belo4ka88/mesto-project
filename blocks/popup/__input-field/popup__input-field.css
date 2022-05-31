@@ -7,7 +7,13 @@
     border-top: none;
     border-left: none;
     border-right: none;
+    padding-bottom: 7px;
+    margin-bottom: 30px;
 }
+.popup__input-field:last-of-type {
+    margin-bottom: 0;
+}
+
 @media screen and (max-width: 767px) {
     .popup__input-field {
         width: calc(100% - 44px);
