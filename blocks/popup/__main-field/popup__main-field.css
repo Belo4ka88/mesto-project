@@ -1,6 +1,7 @@
 .popup__main-field {
+    padding: 0;
+    border: none;
     display: flex;
     flex-direction: column;
-    width: calc(100% - 38px);
     margin: 0 auto;
 }
