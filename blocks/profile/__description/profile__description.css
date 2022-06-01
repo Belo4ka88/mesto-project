@@ -3,6 +3,7 @@
     font-size: 18px;
     line-height: 22px;
     color: #FFFFFF;
+    width: calc(100vw - 930px);
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow-x: hidden;
@@ -12,16 +13,19 @@
 @media screen and (max-width: 1279px) {
     .profile__description {
         text-align: left;
+        width: calc(100vw - 730px);
     }
 }
 
 @media screen and (max-width: 1023px) {
     .profile__description {
         text-align: center;
+        width: calc(100vw - 530px);
     }
 }
 @media screen and (max-width: 767px) {
     .profile__description {
+        width: calc(100vw - 38px);
         font-size: 14px;
         line-height: 17px;
         margin: 14px auto 0;
