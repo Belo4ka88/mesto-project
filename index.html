@@ -25,51 +25,7 @@
 
     <section class="elements">
         <ul class="element__list">
-        <li class="element">
-                <img src="./images/Boulders.jpg" alt="Пингвины" class="element__image">
-                <div class="element__description-container">
-                    <h2 class="element__title">Пляж пингвинов</h2>
-                    <button class="element__like-button element__like-button_active" type="button" title="Поставить лайк"></button>
-                </div>
-        </li>
-
-        <li class="element">
-            <img src="./images/Cape-Hope.jpg" alt="Мыс" class="element__image">
-            <div class="element__description-container">
-                <h2 class="element__title">Мыс</h2>
-                <button class="element__like-button element__like-button_active" type="button" title="Поставить лайк"></button>
-            </div>
-        </li>
-
-        <li class="element">
-            <img src="./images/Lisbon-falls.jpg" alt="Водопад" class="element__image">
-            <div class="element__description-container">
-                <h2 class="element__title">Мпумаланга</h2>
-                <button class="element__like-button element__like-button_active" type="button" title="Поставить лайк"></button>
-            </div>
-        </li>
-
-        <li class="element">
-            <img src="./images/Lucky-pothols.jpg" alt="Потолс" class="element__image">
-            <div class="element__description-container">
-                <h2 class="element__title">Лаки Потолс</h2>
-                <button class="element__like-button element__like-button_active" type="button" title="Поставить лайк"></button>
-            </div>
-        </li>
-        <li class="element">
-            <img src="./images/Table-Mountain.jpg" alt="Столовая Гора" class="element__image">
-            <div class="element__description-container">
-                <h2 class="element__title">Столовая Гора</h2>
-                <button class="element__like-button element__like-button_active" type="button" title="Поставить лайк"></button>
-            </div>
-        </li>
-        <li class="element">
-            <img src="./images/Tsitsikama.jpg" alt="Тситсикама" class="element__image">
-            <div class="element__description-container">
-                <h2 class="element__title">Парк Тситсикама</h2>
-                <button class="element__like-button element__like-button_active" type="button" title="Поставить лайк"></button>
-            </div>
-        </li>
+           
         </ul>
     </section>
 </main>
@@ -78,9 +34,10 @@
     <p class="footer__text">© 2020 Mesto Russia</p>
 </footer>
 
+<!--Попап редактирования профиля -->
 <div class="popup popup_profile-edit">
     <div class="popup__container">
-        <button class="popup__close-button" type="button" title="Закрыть окно"></button>
+        <button class="popup__close-button " type="button" title="Закрыть окно"></button>
         <form action="get" class="popup__form" id="popup__form" name="popup__form">
             <div class="popup__main-field">
                 <h2 class="popup__legend">Редактировать профиль</h2>
@@ -92,6 +49,7 @@
     </div>
 </div>
 
+<!--Попап добавления карточки -->
 <div class="popup popup_card-add">
     <div class="popup__container">
         <button class="popup__close-button" type="button" title="Закрыть окно" ></button>
@@ -105,6 +63,27 @@
         </form>
     </div>
 </div>
+
+<!--Попап с карточками-->
+<div class="popup popup_card">
+    <figure class="figure">
+        <button class="popup__close-button" type="button" title="Закрыть окно" ></button>
+        <img class="popup__image" src="#" alt="#">
+        <figcaption class="figure__image-caption"></figcaption>
+    </figure>
+</div>
+
+<template id="element_add">
+<li class="element">
+    <button class="element__delete-button" type="button" title="Удалить карточку"></button>
+    <img  src="#" alt="#" class="element__image">
+    <div class="element__description-container">
+        <h2 class="element__title"></h2>
+        <button class="element__like-button" type="button" title="Поставить лайк"></button>
+    </div>
+</li>
+</template>
+
 
 <script src="./script.js"></script>
 </body>

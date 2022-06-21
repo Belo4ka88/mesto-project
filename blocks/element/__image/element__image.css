@@ -1,6 +1,7 @@
 .element__image {
-    width: 100%;
-    object-fit: cover;
+    width: 282px;
+    height: 282px;
     border-start-start-radius: 10px;
     border-start-end-radius: 10px;
+    cursor: pointer;
 }
