@@ -1,10 +1,10 @@
 .profile__info-container {
     margin: 0;
-    width: 336px;
+    max-width: 336px;
     display: flex;
     flex-direction: row;
     align-items: baseline;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 @media screen and (max-width: 1023px) {
