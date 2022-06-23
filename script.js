@@ -50,23 +50,26 @@ const occupationInput = popupProfile.querySelector('[name="occupation"]');
 const profileName = document.querySelector('.profile__name');
 const occupationName = document.querySelector('.profile__description');
 
+
 //Для добавления карточек
 const photoName = cardAdd.querySelector('[name="name"]');
 const photoLink = cardAdd.querySelector('[name="occupation');
-
 //Добавление новой карточки
 function pasteCard () {
   const newCardElement = addCard(photoName.value,photoLink.value);
   cardConteiner.prepend(newCardElement);  
-  popupClose(cardAdd);
+  closePopup(cardAdd);
+    photoName.value = '';
+    photoLink.value = '';
 }
 
+
 // Открывает Попап
-function popupOpen (element) {
+function openPopup (element) {
     element.classList.add('popup_opened');
 }
 //Закрывает Попап
-function popupClose (element) {
+function closePopup (element) {
     element.classList.remove('popup_opened');
 }
 //Функция сохраняет данные профиля и закрывает попап
@@ -79,7 +82,7 @@ function editProfile() {
 popupAll.forEach( (popup) => {
     popup.addEventListener('click', (event) => {
         if (event.target.classList.contains('popup__close-button')) {
-            popupClose(popup);
+          closePopup(popup);
         }
     });
     popup.addEventListener('submit', (event) => {
@@ -87,7 +90,6 @@ popupAll.forEach( (popup) => {
         if(event.target.closest('.popup_card-add')) {
           return pasteCard();
         }
-        return editProfile();
         return event.target.closest('.popup_card-add') ? pasteCard() : editProfile();
     })
 });
@@ -95,10 +97,10 @@ popupAll.forEach( (popup) => {
 editButton.addEventListener('click', ()=> {
   nameInput.value = profileName.textContent;
   occupationInput.value = occupationName.textContent;
-  popupOpen(popupProfile);
+  openPopup(popupProfile);
 });
 
-placePopup.addEventListener('click', ()=> popupOpen(cardAdd));
+placePopup.addEventListener('click', ()=> openPopup(cardAdd));
 
 //Функция открыть/закрыть попап карточки
 
@@ -106,7 +108,7 @@ function cardPopupOpen (element) {
   cardImage.src = element.src;
   cardImage.alt = element.alt;
   cardDescription.textContent = element.alt;
-  popupOpen(cardPopup);
+  openPopup(cardPopup);
 }
 
 //Добавление карточки
@@ -136,6 +138,6 @@ function pasteItemes(data){
   const newCard = addCard(item.name, item.link);
   cardConteiner.append(newCard);
   });
-};
+  };
 
 pasteItemes(initialCards);
