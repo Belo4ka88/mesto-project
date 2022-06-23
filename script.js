@@ -76,7 +76,7 @@ function closePopup (element) {
 function editProfile() {
    profileName.textContent = nameInput.value;
    occupationName.textContent = occupationInput.value;
-   popupClose(popupProfile);
+   closePopup(popupProfile);
 }
 //Перебор массива с карточками. Закрывает попап, вставляет карточку
 popupAll.forEach( (popup) => {
