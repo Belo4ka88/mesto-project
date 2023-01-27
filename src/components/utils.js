@@ -1,4 +1,37 @@
+import tableMountain from '../images/Table-Mountain.jpg';
+import capeGood from '../images/Cape-Hope.jpg';
+import penguin from '../images/Boulders.jpg';
+import potols from '../images/Lucky-pothols.jpg';
+import tsitsikama from '../images/Tsitsikama.jpg';
+import lissabon from '../images/Lisbon-falls.jpg';
 
+// Массив с карточками
+export const initialCards = [
+    {
+      name: 'Столовая Гора',
+      link: tableMountain
+    },
+    {
+      name: 'Мыс Доброй Надежды',
+      link: capeGood
+    },
+    {
+      name: 'Пляж Пингвинов',
+      link: penguin
+    },
+    {
+      name: 'Лаки Потолс',
+      link: potols
+    },
+    {
+      name: 'Парк Тситсикама',
+      link: tsitsikama
+    },
+    {
+      name: 'Водопад Лиссабон',
+      link: lissabon
+    }
+  ];
   //Переменные для рекатирования профиля
   export const popupAll = document.querySelectorAll('.popup');
   export const popupProfile = document.querySelector('.popup_profile-edit');

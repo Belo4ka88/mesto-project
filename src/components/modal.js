@@ -1,7 +1,7 @@
 import {popupAll, avatarEdit, addCardButton, editButtonStatusSave, editButtonStatusDefault} from './utils.js';
 import { popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue} from './utils.js';
 import { pasteCard } from './card.js';
-import { submitProfileForm, changeAvatar } from './api.js';
+import {enableValidation} from './validate.js';
 
 //Перебор массива с карточками. Закрывает попап, вставляет карточку
   popupAll.forEach( (popup) => {
@@ -13,7 +13,7 @@ import { submitProfileForm, changeAvatar } from './api.js';
             closePopup(popup);
           }
       });
-      popup.addEventListener('keydown', (evt) => {
+      document.addEventListener('keydown', (evt) => {
         if(evt.key === 'Escape') {
           closePopup(popup);
         }
@@ -46,27 +46,18 @@ import { submitProfileForm, changeAvatar } from './api.js';
     }
       //Функция сохраняет данные профиля и закрывает попап
     export function editProfile(button) {
-    submitProfileForm(nameInput, occupationInput)
-      .then((result) => {
-        editButtonStatusDefault(button, 'Сохранить');
-        profileName.textContent = nameInput.value;
-        occupationName.textContent = occupationInput.value;
-        closePopup(popupProfile);
-      })
-      .catch((err) => {
-        console.log(err); // выводим ошибку в консоль
-      });
+      editButtonStatusDefault(button, 'Сохранить');
+      profileName.textContent = nameInput.value;
+      occupationName.textContent = occupationInput.value;
+      closePopup(popupProfile);
+      enableValidation();
  }
 
 
       //Функция обновления аватара
       export function editAvatar(button) {
-        changeAvatar(avatarValue).then((result) => {
-          editButtonStatusDefault(button, 'Сохранить');
-          avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
-          closePopup(popupAvatar);
-        })
-        .catch((err) => {
-          console.log(err); // выводим ошибку в консоль
-        });
+        editButtonStatusDefault(button, 'Сохранить');
+        avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
+        closePopup(popupAvatar);
+        enableValidation();
       }
