@@ -1,0 +1,18 @@
+.popup__input-field {
+    margin: auto;
+    width: calc(100% - 72px);
+    font-size: 14px;
+    line-height: 17px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding-bottom: 7px;
+    margin-bottom: 5px;
+}
+
+
+@media screen and (max-width: 767px) {
+    .popup__input-field {
+        width: calc(100% - 44px);
+    }
+}

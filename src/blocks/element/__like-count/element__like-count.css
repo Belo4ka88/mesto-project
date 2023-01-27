@@ -1,0 +1,5 @@
+.element__like-count {
+    line-height: 16px;
+    color: rgba(0, 0, 0, 1);
+    margin: 3px auto 0;
+}

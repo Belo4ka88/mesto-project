@@ -4,24 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Место</title>
-  <link rel="stylesheet" href="./pages/index.css">
 </head>
 <body class="page">
     <header class="header">
         <div class="header__logo"></div>
     </header>
 <main>
-    <section class="profile">
-      <div class="profile__image"></div> 
-            <div class="profile__content">
-              <div class="profile__info-container">
-                <h1 class="profile__name">Жак-Ив Кусто</h1>
-                <button class="profile__edit-button" type="button" title="Редактировать профиль" id="edit-button"></button>
-              </div>
-              <p class="profile__description">Исследователь океана</p>
+  <section class="profile">
+    <div class="profile__image"></div> 
+          <div class="profile__content">
+            <div class="profile__info-container">
+              <h1 class="profile__name"></h1>
+              <button class="profile__edit-button" type="button" title="Редактировать профиль" id="edit-button"></button>
             </div>
-        <button class="profile__add-button" type="button"></button>
-    </section>
+            <p class="profile__description"></p>
+          </div>
+      <button class="profile__add-button" type="button"></button>
+  </section>
 
     <section class="elements">
         <ul class="element__list">
@@ -33,35 +32,33 @@
 <footer class="footer">
     <p class="footer__text">© 2020 Mesto Russia</p>
 </footer>
-
 <!--Попап редактирования аватара -->
 <div class="popup popup__avatar" tabindex="-1">
-    <div class="popup__container">
-        <button class="popup__close-button " type="button" title="Закрыть окно"></button>
-        <form action="get" class="popup__form" id="popup__form" name="editAvatar">
-            <div class="popup__main-field">
-                <h2 class="popup__legend">Обновить аватар</h2>
-                <input class="popup__input-field" type="text" name="name" placeholder="Ссылка на аватар" minlength="2" maxlength="40" required>
-                <div class="popup__input-message popup__input-name">Вы пропустили это поле.</div>
-                <button class="popup__save-button" type="submit">Сохранить</button>
-            </div>
-        </form>
-    </div>
+  <div class="popup__container">
+      <button class="popup__close-button " type="button" title="Закрыть окно"></button>
+      <form action="get" class="popup__form" id="popup__form" name="editAvatar" novalidate>
+          <div class="popup__main-field">
+              <h2 class="popup__legend">Обновить аватар</h2>
+              <input class="popup__input-field" type="url" name="name" placeholder="Ссылка на аватар" required>
+              <div class="popup__input-message popup__input-name">Вы пропустили это поле.</div>
+              <button class="popup__save-button popup__save-button_disabled" type="submit" disabled>Сохранить</button>
+          </div>
+      </form>
+  </div>
 </div>
-
 
 <!--Попап редактирования профиля -->
 <div class="popup popup_profile-edit" tabindex="-1">
     <div class="popup__container">
         <button class="popup__close-button " type="button" title="Закрыть окно"></button>
-        <form action="get" class="popup__form" id="popup__form" name="editProfile">
+        <form action="get" class="popup__form" id="popup__form" name="editProfile" novalidate>
             <div class="popup__main-field">
                 <h2 class="popup__legend">Редактировать профиль</h2>
-                <input class="popup__input-field" type="text" name="name" placeholder="Имя" minlength="2" maxlength="40" required>
+                <input class="popup__input-field" type="text" name="name" placeholder="Имя" minlength="2" maxlength="40" pattern="^[-а-яА-ЯёЁa-zA-z\s]+$" data-error-message="Поле может содержать латинские буквы, кириллические буквы, знаки дефиса и пробелы" required>
                 <div class="popup__input-message popup__input-name">Вы пропустили это поле.</div>
                 <input class="popup__input-field" type="text" name="occupation" placeholder="Профессия" minlength="2" maxlength="400" required>
                 <div class="popup__input-message popup__input-occupation">Введите адрес сайта.</div>
-                <button class="popup__save-button" type="submit">Сохранить</button>
+                <button class="popup__save-button popup__save-button_disabled" type="submit" disabled>Сохранить</button>
             </div>
         </form>
     </div>
@@ -74,11 +71,11 @@
         <form action="get" class="popup__form" id="popup__form" name="addCard" novalidate>
             <div class="popup__main-field">
                 <h2 class="popup__legend">Новое место</h2>
-                <input class="popup__input-field" type="text" name="name" placeholder="Название" minlength="2" maxlength="30" required>
+                <input class="popup__input-field" type="text" name="name" placeholder="Название" minlength="2" maxlength="30" pattern="^[-а-яА-ЯёЁa-zA-z\s]+$"  data-error-message="Поле может содержать латинские буквы, кириллические буквы, знаки дефиса и пробелы" required>
                 <div class="popup__input-message popup__input-name">Вы пропустили это поле.</div>
                 <input class="popup__input-field" type="url" name="link" placeholder="Ссылка на картинку" required>
                 <div class="popup__input-message popup__input-link">Введите адрес сайта.</div>
-                <button class="popup__save-button popup__save-button_active" type="submit" id="save">Создать</button>
+                <button class="popup__save-button popup__save-button_disabled" type="submit" id="save" disabled>Создать</button>
             </div>
         </form>
     </div>
@@ -96,15 +93,15 @@
 <template id="element_add">
 <li class="element">
     <button class="element__delete-button" type="button" title="Удалить карточку"></button>
-    <img  src="#" alt="#" class="element__image">
+    <img  src="#" alt="#" class="element__image" id="">
     <div class="element__description-container">
         <h2 class="element__title"></h2>
-        <button class="element__like-button" type="button" title="Поставить лайк"></button>
+        <div class="element__likes-components">
+            <button class="element__like-button" type="button" title="Поставить лайк"></button>
+            <div class="element__like-count"></div>
+        </div>
     </div>
 </li>
 </template>
-
-
-<script src="./script.js"></script>
 </body>
 </html>

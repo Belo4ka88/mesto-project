@@ -28,12 +28,14 @@ const initialCards = [
 //Переменные для рекатирования профиля
 const popupAll = document.querySelectorAll('.popup');
 const popupProfile = document.querySelector('.popup_profile-edit');
+const profileForm = document.forms.editProfile;
 //Переменные для добавления карточки
 const editButton = document.querySelector('.profile__edit-button');
 const placePopup = document.querySelector('.profile__add-button');
 const addCardButton = document.querySelector('.popup__save-button')
 //Кнопка для добавления карточки
 const cardAdd = document.querySelector('.popup_card-add');
+const cardForm = document.forms.addCard;
 //Переменна, куда вставляется заготовка
 const cardConteiner = document.querySelector('.element__list');
 //Переменная для попапа с изображением с карточки
@@ -43,8 +45,8 @@ const cardImage = cardPopup.querySelector('.popup__image');
 //Переменная для описания карточки
 const cardDescription = cardPopup.querySelector('.figure__image-caption');
 //Инпуты для добавления карточки
-const nameInput = popupProfile.querySelector('[name="name"]');
-const occupationInput = popupProfile.querySelector('[name="occupation"]'); 
+const nameInput = profileForm.elements.name;
+const occupationInput = profileForm.elements.occupation;
 
 //Поля инпут для редактирования профиля
 const profileName = document.querySelector('.profile__name');
@@ -52,15 +54,14 @@ const occupationName = document.querySelector('.profile__description');
 
 
 //Для добавления карточек
-const photoName = cardAdd.querySelector('[name="name"]');
-const photoLink = cardAdd.querySelector('[name="occupation');
+const photoName = cardForm.elements.name;
+const photoLink = cardForm.elements.link;
 //Добавление новой карточки
 function pasteCard () {
   const newCardElement = addCard(photoName.value,photoLink.value);
   cardConteiner.prepend(newCardElement);  
   closePopup(cardAdd);
-    photoName.value = '';
-    photoLink.value = '';
+  cardForm.reset();
 }
 
 
@@ -84,6 +85,14 @@ popupAll.forEach( (popup) => {
         if (event.target.classList.contains('popup__close-button')) {
           closePopup(popup);
         }
+        if (event.target.classList.contains('popup')) {
+          closePopup(popup);
+        }
+    });
+    popup.addEventListener('keydown', (evt) => {
+      if(evt.key === 'Escape') {
+        closePopup(popup);
+      }
     });
     popup.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -141,3 +150,77 @@ function pasteItemes(data){
   };
 
 pasteItemes(initialCards);
+
+
+//Функция, показывающая ошибку
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.popup__input-${inputElement.name}`);
+  inputElement.classList.add('popup__input-field_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-message_visible');
+};
+//Функция, скрывающая ошибку
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.popup__input-${inputElement.name}`);
+  inputElement.classList.remove('popup__input-field_error');
+  errorElement.classList.remove('popup__input-message_visible');
+};
+//Проверка на валидность
+const isValid = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else if (!checkNameField(inputElement.value) && inputElement.name === 'name') {
+    showInputError(formElement, inputElement, 'Поля могут содержать только латинские буквы, кириллические буквы, знаки дефиса и пробелы');
+  } else {
+    inputElement.validity.valid = true;
+    hideInputError(formElement, inputElement);
+  }
+};
+//Проверка поля название
+function checkNameField(name) {
+  console.log(name);
+  const nameField = /^[-а-яА-ЯёЁa-zA-z\s]+$/;
+  return nameField.test(name);
+}
+
+//Проверяет валидность полей
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return inputElement.classList.contains('popup__input-field_error')
+  });
+};
+
+//Функция включения/выключения кнопки
+const toggleButtonState = (inputList, buttonElement) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.remove('popup__save-button_active');
+    buttonElement.classList.add('popup__save-button_disabled');
+    buttonElement.setAttribute('disabled', true);
+  } else {
+    buttonElement.classList.add('popup__save-button_active');
+    buttonElement.classList.remove('popup__save-button_disabled');
+    buttonElement.removeAttribute('disabled');
+  }
+};
+
+
+//Добавить слушатели
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input-field'));
+  const buttonElement = formElement.querySelector('.popup__save-button');
+  toggleButtonState(inputList, buttonElement);
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      isValid(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
+  });
+});
+};
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.popup__form'));
+  formList.forEach((formElement) => {
+    setEventListeners(formElement);
+  });
+};
+enableValidation();
