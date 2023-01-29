@@ -1,33 +1,19 @@
-import {popupAll, avatarEdit, addCardButton, editButtonStatusSave, editButtonStatusDefault} from './utils.js';
-import { popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue} from './utils.js';
+import { editButtonStatusSave, editButtonStatusDefault } from './utils.js';
+import { popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
 import { pasteCard } from './card.js';
-import {enableValidation} from './validate.js';
+import { enableValidation } from './validate.js';
 
-//Перебор массива с карточками. Закрывает попап, вставляет карточку
-  popupAll.forEach( (popup) => {
-      popup.addEventListener('click', (event) => {
-          if (event.target.classList.contains('popup__close-button')) {
-            closePopup(popup);
-          }
-          if (event.target.classList.contains('popup')) {
-            closePopup(popup);
-          }
-      });
-      document.addEventListener('keydown', (evt) => {
-        if(evt.key === 'Escape') {
-          closePopup(popup);
-        }
-      });
-      popup.addEventListener('submit', (event) => {
-          event.preventDefault();
-          const button = event.target.querySelector('.popup__save-button');
-          editButtonStatusSave(button);
-          if(event.target.closest('.popup_card-add')) {
-            return pasteCard(button);
-          }
-          return event.target.closest('.popup__avatar') ? editAvatar(button) : editProfile(button);
-      })
-  });
+export function submitAction(event) {
+  event.preventDefault();
+  const button = event.target.querySelector(settings.popupSaveButton);
+  if(button) {
+    editButtonStatusSave(button);
+    if(event.target.closest('.popup_card-add')) {
+      return pasteCard(button);
+    }
+    return event.target.closest('.popup__avatar') ? editAvatar(button) : editProfile(button);
+  }
+}
     //Функция открыть/закрыть попап карточки
   
     export function cardPopupOpen (element) {
@@ -39,10 +25,12 @@ import {enableValidation} from './validate.js';
      // Открывает Попап
     export function openPopup (element) {
     element.classList.add('popup_opened');
+    document.addEventListener('keydown', closeByEscape);
     }
     //Закрывает Попап
     export function closePopup (element) {
     element.classList.remove('popup_opened');
+    document.removeEventListener('keydown', closeByEscape);
     }
       //Функция сохраняет данные профиля и закрывает попап
     export function editProfile(button) {
@@ -59,5 +47,12 @@ import {enableValidation} from './validate.js';
         editButtonStatusDefault(button, 'Сохранить');
         avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
         closePopup(popupAvatar);
-        enableValidation();
+        avatarForm.reset();
+      }
+
+      export function closeByEscape(evt) {
+        if (evt.key === 'Escape') {
+          const openedPopup = document.querySelector('.popup_opened');
+          if(openedPopup) closePopup(openedPopup);
+        }
       }

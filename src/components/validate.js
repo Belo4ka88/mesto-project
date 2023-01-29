@@ -1,70 +1,75 @@
 
-
-  //Проверяет валидность полей
-export const hasInvalidInput = (inputList) => {
+//Проверяет валидность полей
+export const hasInvalidInput = (inputList, settings) => {
     return inputList.some((inputElement) => {
       if(inputElement.value.length === 0) return true;
-      return inputElement.classList.contains('popup__input-field_error')
+      return inputElement.classList.contains(settings.popupInputError)
     });
   };
-  //Функция, показывающая ошибку
- export  const showInputError = (formElement, inputElement, errorMessage) => {
+
+//Функция, показывающая ошибку
+export  const showInputError = (formElement, inputElement, errorMessage, settings) => {
     const errorElement = formElement.querySelector(`.popup__input-${inputElement.name}`);
-    inputElement.classList.add('popup__input-field_error');
+    inputElement.classList.add(settings.popupInputError);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add('popup__input-message_visible');
+    errorElement.classList.add(settings.popupInputMessageVisible);
   };
-  //Функция, скрывающая ошибку
- export const hideInputError = (formElement, inputElement) => {
+
+//Функция, скрывающая ошибку
+export const hideInputError = (formElement, inputElement, settings) => {
     const errorElement = formElement.querySelector(`.popup__input-${inputElement.name}`);
-    inputElement.classList.remove('popup__input-field_error');
-    errorElement.classList.remove('popup__input-message_visible');
+    inputElement.classList.remove(settings.popupInputError);
+    errorElement.classList.remove(settings.popupInputMessageVisible);
   };  
 
-    
-  
-  //Проверка на валидность
-  const isValid = (formElement, inputElement) => {
-    if(inputElement.validity.patternMismatch) {
-      showInputError(formElement, inputElement, inputElement.dataset.errorMessage);
-    }
+//Проверка на валидность
+const isValid = (formElement, inputElement, settings) => {
+  if(inputElement.validity.patternMismatch) {
+    showInputError(formElement, inputElement, inputElement.dataset.errorMessage, settings);
+  }
     else if (!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage);
+      showInputError(formElement, inputElement, inputElement.validationMessage, settings);
     } else {
-      hideInputError(formElement, inputElement);
+      hideInputError(formElement, inputElement, settings);
     }
   };
 
   //Функция включения/выключения кнопки
-  const toggleButtonState = (inputList, buttonElement) => {
-    if (hasInvalidInput(inputList)) {
-      buttonElement.classList.remove('popup__save-button_active');
-      buttonElement.classList.add('popup__save-button_disabled');
+  const toggleButtonState = (inputList, buttonElement, settings) => {
+    if (hasInvalidInput(inputList, settings)) {
+      buttonElement.classList.remove(settings.popupSaveButtonActive);
+      buttonElement.classList.add(settings.popupSaveButtonDisabled);
       buttonElement.setAttribute('disabled', true);
     } else {
-      buttonElement.classList.add('popup__save-button_active');
-      buttonElement.classList.remove('popup__save-button_disabled');
+      buttonElement.classList.add(settings.popupSaveButtonActive);
+      buttonElement.classList.remove(settings.popupSaveButtonDisabled);
       buttonElement.removeAttribute('disabled');
     }
   };
   
   
   //Добавить слушатели
-  const setEventListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input-field'));
-    const buttonElement = formElement.querySelector('.popup__save-button');
-    toggleButtonState(inputList, buttonElement);
+  const setEventListeners = (formElement, settings) => {
+    const inputList = Array.from(formElement.querySelectorAll(settings.popupInput));
+    const buttonElement = formElement.querySelector(settings.popupSaveButton);
+    toggleButtonState(inputList, buttonElement, settings);
+    formElement.addEventListener('reset', () => {
+      // `setTimeout` нужен для того, чтобы дождаться очищения формы (вызов уйдет в конце стэка) и только потом вызвать `toggleButtonState`
+      setTimeout(() => {
+        toggleButtonState(inputList, buttonElement, settings);
+      }, 0); // достаточно указать 0 миллисекунд, чтобы после `reset` уже сработало действие
+    });
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
-        isValid(formElement, inputElement);
-        toggleButtonState(inputList, buttonElement);
+        isValid(formElement, inputElement, settings);
+        toggleButtonState(inputList, buttonElement, settings);
     });
   });
   };
   
-  export const enableValidation = () => {
-    const formList = Array.from(document.querySelectorAll('.popup__form'));
+  export const enableValidation = (settings) => {
+    const formList = Array.from(document.querySelectorAll(settings.popupForm));
     formList.forEach((formElement) => {
-      setEventListeners(formElement);
+      setEventListeners(formElement, settings);
     });
   };

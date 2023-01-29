@@ -1,17 +1,16 @@
 import {cardPopupOpen, closePopup} from './modal.js';
-import {cardConteiner, photoLink, photoName, cardAdd, cardForm, editButtonStatusDefault, initialCards} from './utils.js';
-import {enableValidation} from './validate.js';
+import {cardConteiner, photoLink, photoName, cardAdd, cardForm, initialCards} from './constants.js';
+import { editButtonStatusDefault } from './utils.js';
 
 
 
-  //Добавление новой карточки
+//Добавление новой карточки
 export function pasteCard (button) {
     const newCardElement = addCard(photoName.value,photoLink.value, 0);
     cardConteiner.prepend(newCardElement);
     editButtonStatusDefault(button, 'Создать');
     closePopup(cardAdd);
     cardForm.reset();
-    enableValidation();
   }
 
   //Добавление карточки
