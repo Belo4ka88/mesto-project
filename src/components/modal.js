@@ -1,7 +1,6 @@
 import { editButtonStatusSave, editButtonStatusDefault } from './utils.js';
-import { popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
+import { avatarEdit, avatarForm, popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
 import { pasteCard } from './card.js';
-import { enableValidation } from './validate.js';
 
 export function submitAction(event) {
   event.preventDefault();
@@ -38,7 +37,6 @@ export function submitAction(event) {
       profileName.textContent = nameInput.value;
       occupationName.textContent = occupationInput.value;
       closePopup(popupProfile);
-      enableValidation();
  }
 
 
