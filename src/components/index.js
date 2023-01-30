@@ -3,6 +3,7 @@ import '../index.css';
 import {settings, popupProfile, editButton, placePopup, cardAdd, nameInput, occupationInput, profileName, occupationName, avatarEdit, popupAvatar, popupAll} from './constants.js';
 import {enableValidation} from './validate.js';
 import {pasteItemes} from './card.js';
+import { renderProfile } from './api.js';
 
 import {openPopup, submitAction, closePopup} from './modal.js';
 
@@ -17,7 +18,16 @@ import {openPopup, submitAction, closePopup} from './modal.js';
     openPopup(popupProfile);
   });
 
-
+renderProfile().then((result) => {
+  if(result) {
+    avatarEdit.style.backgroundImage = `url(${result.avatar}`;
+    profileName.textContent = result.name;
+    occupationName.textContent = result.about;
+  }
+  })
+  .catch((err) => {
+    console.log(err); // выводим ошибку в консоль
+  });
 
 //Перебор массива с карточками. Закрывает попап, вставляет карточку
 popupAll.forEach( (popup) => {

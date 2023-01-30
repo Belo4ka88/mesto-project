@@ -1,6 +1,7 @@
 import { editButtonStatusSave, editButtonStatusDefault } from './utils.js';
 import { avatarEdit, avatarForm, popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
 import { pasteCard } from './card.js';
+import { submitProfileForm, changeAvatar } from './api.js';
 
 export function submitAction(event) {
   event.preventDefault();
@@ -33,19 +34,34 @@ export function submitAction(event) {
     }
       //Функция сохраняет данные профиля и закрывает попап
     export function editProfile(button) {
-      editButtonStatusDefault(button, 'Сохранить');
-      profileName.textContent = nameInput.value;
-      occupationName.textContent = occupationInput.value;
-      closePopup(popupProfile);
+      submitProfileForm(nameInput, occupationInput)
+      .then((result) => {
+        if(result) {
+          editButtonStatusDefault(button, 'Сохранить');
+          profileName.textContent = nameInput.value;
+          occupationName.textContent = occupationInput.value;
+          closePopup(popupProfile);
+        }
+      })
+      .catch((err) => {
+        console.log(err); // выводим ошибку в консоль
+      });
  }
 
 
       //Функция обновления аватара
       export function editAvatar(button) {
-        editButtonStatusDefault(button, 'Сохранить');
-        avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
-        closePopup(popupAvatar);
-        avatarForm.reset();
+        changeAvatar(avatarValue).then((result) => {
+          if(result) {
+            editButtonStatusDefault(button, 'Сохранить');
+            avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
+            closePopup(popupAvatar);
+            avatarForm.reset();
+          }
+        })
+        .catch((err) => {
+          console.log(err); // выводим ошибку в консоль
+        });
       }
 
       export function closeByEscape(evt) {

@@ -5,3 +5,7 @@ export function editButtonStatusSave (button) {
 export function editButtonStatusDefault (button,text) {
         button.textContent = text;
     }
+
+export function getResponse (res) {
+    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+}
