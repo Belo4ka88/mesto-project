@@ -1,6 +1,6 @@
 import { closePopup, openPopup } from './modal.js';
-import {cardConteiner, photoLink, photoName, cardAdd, cardForm, cardImage, cardDescription, cardPopup} from './constants.js';
-import { editButtonStatusDefault } from './utils.js';
+import {cardConteiner, photoLink, photoName, cardAdd, cardImage, cardDescription, cardPopup} from './constants.js';
+import { handleSubmit } from './utils.js';
 import { submitPlaceForm, deletePlace , addLike, deleteLike} from './api.js';
 import { userId } from './index.js';
 
@@ -14,24 +14,20 @@ function openImagePopup (imageTitle, imageLink) {
         openPopup(cardPopup);
 }
 
-//Добавление новой карточки
-export function pasteCard (button) {
-    submitPlaceForm(photoName, photoLink)
-    .then((result) => {
-        if(result) {
-            const newCardElement = addCard(result.name,result.link, 0, result._id, false, true);
-            cardConteiner.prepend(newCardElement);
-            closePopup(cardAdd);
-            cardForm.reset();
-            return;
-        }
-    })
-    .catch((err) => {
-      console.log(err); 
-    })
-    .finally(() => { 
-        editButtonStatusDefault(button, 'Создать');
-    });
+
+// пример оптимизации обработчика сабмита формы карточки
+export function handleCardFormSubmit(evt) {
+    // создаем функцию, которая возвращает промис, так как любой запрос возвращает его 
+    function makeRequest() {
+      // вот это позволяет потом дальше продолжать цепочку `then, catch, finally`
+      return submitPlaceForm(photoName,photoLink).then((userData) => {
+        const newCardElement = addCard(userData.name,userData.link, 0, userData._id, false, true);
+        cardConteiner.prepend(newCardElement);
+        closePopup(cardAdd);
+      });
+    }
+    // вызываем универсальную функцию, передавая в нее запрос, событие и текст изменения кнопки (если нужен другой, а не `"Сохранение..."`)
+    handleSubmit(makeRequest, evt);
   }
 
   //Добавление карточки

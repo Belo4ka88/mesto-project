@@ -1,11 +1,11 @@
 import '../index.css';
 
-import {formsPopup, settings, popupProfile, editButton, placePopup, cardAdd, nameInput, occupationInput, profileName, occupationName, avatarEdit, popupAvatar, popupAll} from './constants.js';
+import { profileForm, avatarForm, cardForm, settings, popupProfile, editButton, placePopup, cardAdd, nameInput, occupationInput, profileName, occupationName, avatarEdit, popupAvatar, popupAll} from './constants.js';
 import {enableValidation} from './validate.js';
-import {pasteItemes} from './card.js';
+import { pasteItemes,handleCardFormSubmit } from './card.js';
 import { renderProfile, getCards } from './api.js';
 
-import {openPopup, submitAction, closePopup} from './modal.js';
+import {openPopup, handleProfileFormSubmit, handleProfileAvatarFormSubmit, closePopup } from './modal.js';
 
 export let userId;
 
@@ -47,9 +47,9 @@ popupAll.forEach( (popup) => {
   
   placePopup.addEventListener('click', ()=> openPopup(cardAdd));
 
-  formsPopup.forEach((el) => {
-    el.addEventListener('submit', submitAction);
-  });
+  profileForm.addEventListener('submit', handleProfileFormSubmit);
+  avatarForm.addEventListener('submit', handleProfileAvatarFormSubmit);
+  cardForm.addEventListener('submit', handleCardFormSubmit);
 
   
   enableValidation(settings);

@@ -1,64 +1,55 @@
-import { editButtonStatusSave, editButtonStatusDefault } from './utils.js';
+import { handleSubmit } from './utils.js';
 import { avatarEdit, avatarForm, popupAvatar, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
-import { pasteCard } from './card.js';
 import { submitProfileForm, changeAvatar } from './api.js';
 
-export function submitAction(event) {
-  event.preventDefault();
-  const button = event.target.querySelector(settings.popupSaveButton);
-  if(button) {
-    editButtonStatusSave(button);
-    if(event.target.closest('.popup_card-add')) {
-      return pasteCard(button);
-    }
-    return event.target.closest('.popup__avatar') ? editAvatar(button) : editProfile(button);
-  }
+
+
+
+// Открывает Попап
+export function openPopup (element) {
+      element.classList.add('popup_opened');
+      document.addEventListener('keydown', closeByEscape);
 }
-     // Открывает Попап
-    export function openPopup (element) {
-    element.classList.add('popup_opened');
-    document.addEventListener('keydown', closeByEscape);
-    }
-    //Закрывает Попап
-    export function closePopup (element) {
-    element.classList.remove('popup_opened');
-    document.removeEventListener('keydown', closeByEscape);
-    }
-      //Функция сохраняет данные профиля и закрывает попап
-    export function editProfile(button) {
-      submitProfileForm(nameInput, occupationInput)
-      .then((result) => {
-        if(result) {
-          editButtonStatusDefault(button, 'Сохранить');
-          profileName.textContent = nameInput.value;
-          occupationName.textContent = occupationInput.value;
-          closePopup(popupProfile);
-        }
-      })
-      .catch((err) => {
-        console.log(err); // выводим ошибку в консоль
-      });
- }
 
-
-      //Функция обновления аватара
-      export function editAvatar(button) {
-        changeAvatar(avatarValue).then((result) => {
-          if(result) {
-            editButtonStatusDefault(button, 'Сохранить');
-            avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
-            closePopup(popupAvatar);
-            avatarForm.reset();
-          }
-        })
-        .catch((err) => {
-          console.log(err); // выводим ошибку в консоль
-        });
+//Закрывает Попап
+export function closePopup (element) {
+      element.classList.remove('popup_opened');
+      document.removeEventListener('keydown', closeByEscape);
       }
 
-      export function closeByEscape(evt) {
+export function closeByEscape(evt) {
         if (evt.key === 'Escape') {
           const openedPopup = document.querySelector('.popup_opened');
           if(openedPopup) closePopup(openedPopup);
         }
-      }
+}
+
+
+// пример оптимизации обработчика сабмита формы профиля
+export function handleProfileFormSubmit(evt) {
+  // создаем функцию, которая возвращает промис, так как любой запрос возвращает его 
+  function makeRequest() {
+    // вот это позволяет потом дальше продолжать цепочку `then, catch, finally`
+    return submitProfileForm(nameInput, occupationInput).then((userData) => {
+      profileName.textContent = userData.name;
+      occupationName.textContent = userData.about;
+      closePopup(popupProfile);
+    });
+  }
+  // вызываем универсальную функцию, передавая в нее запрос, событие и текст изменения кнопки (если нужен другой, а не `"Сохранение..."`)
+  handleSubmit(makeRequest, evt);
+}
+
+// пример оптимизации обработчика сабмита формы профиля аватара
+export function handleProfileAvatarFormSubmit(evt) {
+  // создаем функцию, которая возвращает промис, так как любой запрос возвращает его 
+  function makeRequest() {
+    // вот это позволяет потом дальше продолжать цепочку `then, catch, finally`
+    return changeAvatar(avatarValue).then((userData) => {
+      avatarEdit.style.backgroundImage = `url(${avatarValue.value}`;
+      closePopup(popupAvatar);
+    });
+  }
+  // вызываем универсальную функцию, передавая в нее запрос, событие и текст изменения кнопки (если нужен другой, а не `"Сохранение..."`)
+  handleSubmit(makeRequest, evt);
+}
