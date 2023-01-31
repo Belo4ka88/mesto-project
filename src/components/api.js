@@ -8,47 +8,32 @@ const config = {
 
 import { getResponse } from "./utils";
 
+
 export function deletePlace(cardId) {
     return fetch( `${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
-  })
-    .then(getResponse)
-    .catch((err) =>{
-        console.log(err);
-      })  
+  }).then(getResponse);
   }
 
 export function addLike(cardId) {
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
       method: 'PUT',
       headers: config.headers,
-  })
-    .then(res => getResponse(res))
-    .catch((err) =>{
-          console.log(err);
-      })  
+  }).then(res => getResponse(res));  
   }
   
 export function deleteLike(cardId) {
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
       method: 'DELETE',
       headers: config.headers,
-  })
-        .then(res => getResponse(res))
-        .catch((err) =>{
-            console.log(err);
-        })  
+  }).then(res => getResponse(res));  
   }
 
 export function getCards() {
     return fetch(`${config.baseUrl}/cards`, {
         headers: config.headers,
-      })
-        .then(res => getResponse(res))
-        .catch((err) =>{
-            console.log(err);
-        })  
+      }).then(res => getResponse(res));  
 }
 
 
@@ -60,11 +45,7 @@ export function submitProfileForm(nameInput, jobInput) {
         name: nameInput.value,
         about: jobInput.value
   })
-})
-        .then(res => getResponse(res))
-        .catch((err) =>{
-            console.log(err);
-        })  
+}).then(res => getResponse(res));  
 }
 
 
@@ -76,11 +57,7 @@ export function submitPlaceForm(namePlaceInput, imageInput) {
         name: namePlaceInput.value,
         link: imageInput.value
   })
-})
-        .then(res => getResponse(res))
-        .catch((err) =>{
-            console.log(err);
-        })  
+}).then(res => getResponse(res));  
 }
 
 export function changeAvatar(avatarInput) {
@@ -89,19 +66,11 @@ export function changeAvatar(avatarInput) {
         headers: config.headers,
         body: JSON.stringify({
             avatar: avatarInput.value,
-    })})
-        .then(res => getResponse(res))
-        .catch((err) =>{
-            console.log(err);
-        })  
+    })}).then(res => getResponse(res)); 
 }
 
 export function renderProfile() {
     return fetch(`${config.baseUrl}/users/me`, {
         headers: config.headers,
-        })
-            .then(res => getResponse(res))
-            .catch((err) =>{
-                console.log(err);
-            })  
+        }).then(res => getResponse(res));  
     }

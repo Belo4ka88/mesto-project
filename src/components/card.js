@@ -1,9 +1,18 @@
-import {cardPopupOpen, closePopup} from './modal.js';
-import {cardConteiner, photoLink, photoName, cardAdd, cardForm, initialCards} from './constants.js';
+import { closePopup, openPopup } from './modal.js';
+import {cardConteiner, photoLink, photoName, cardAdd, cardForm, cardImage, cardDescription, cardPopup} from './constants.js';
 import { editButtonStatusDefault } from './utils.js';
-import { getCards, submitPlaceForm, deletePlace, renderProfile, addLike, deleteLike} from './api.js';
+import { submitPlaceForm, deletePlace , addLike, deleteLike} from './api.js';
+import { userId } from './index.js';
 
 
+//Функция открыть/закрыть попап карточки
+  
+function openImagePopup (imageTitle, imageLink) {
+        cardImage.src = imageLink;
+        cardImage.alt = imageTitle;
+        cardDescription.textContent = imageTitle;
+        openPopup(cardPopup);
+}
 
 //Добавление новой карточки
 export function pasteCard (button) {
@@ -12,7 +21,6 @@ export function pasteCard (button) {
         if(result) {
             const newCardElement = addCard(result.name,result.link, 0, result._id, false, true);
             cardConteiner.prepend(newCardElement);
-            editButtonStatusDefault(button, 'Создать');
             closePopup(cardAdd);
             cardForm.reset();
             return;
@@ -20,6 +28,9 @@ export function pasteCard (button) {
     })
     .catch((err) => {
       console.log(err); 
+    })
+    .finally(() => { 
+        editButtonStatusDefault(button, 'Создать');
     });
   }
 
@@ -48,7 +59,7 @@ export function pasteCard (button) {
             deleteLike(cardImage.id).then((result) => {
                 if(result) {
                     cardLikeButton.classList.remove('element__like-button_active');
-                    cardLike.textContent = Number(cardLike.textContent) - 1;
+                    cardLike.textContent = result.likes.length;
                 }
             })
             .catch((err) => {
@@ -59,7 +70,7 @@ export function pasteCard (button) {
             addLike(cardImage.id).then((result) => {
                 if(result) {
                     cardLikeButton.classList.add('element__like-button_active');
-                    cardLike.textContent = Number(cardLike.textContent) + 1;
+                    cardLike.textContent = result.likes.length;
                 }
             })
             .catch((err) => {
@@ -74,22 +85,19 @@ export function pasteCard (button) {
     cardImage.src = imageLink;
     cardImage.alt = imageTitle;
     //cardImage.scr.event.target
-    cardImage.addEventListener('click', evt => cardPopupOpen(evt.target));
+    cardImage.addEventListener('click', () => openImagePopup(imageTitle,imageLink));
     cardLike.textContent = likes;
     //cardConteiner.append(cardElement);
     return cardElement;
   }
 
     //Вставка карточки из массива
-    export function pasteItemes() {
-        renderProfile().then((result) => {
-            if(result) {
-                getCards().then(function (value) {
-                value.forEach(item => {
-                    const owner = item.owner._id === result._id;
+    export function pasteItemes(cards) {
+            cards.forEach(item => {
+                    const owner = item.owner._id === userId;
                     let likeOwner = false;
                     item.likes.forEach(element => {
-                        if(element._id == result._id) {
+                        if(element._id == userId) {
                             likeOwner = true;
                             return;
                         }
@@ -97,10 +105,4 @@ export function pasteCard (button) {
                     const newCard = addCard(item.name, item.link, item.likes.length, item._id, likeOwner, owner);
                     cardConteiner.append(newCard);
                 });
-            });
-            }
-        })
-        .catch((err) => {
-          console.log(err); // выводим ошибку в консоль
-        });
         };

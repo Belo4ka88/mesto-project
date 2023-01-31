@@ -1,11 +1,13 @@
 import '../index.css';
 
-import {settings, popupProfile, editButton, placePopup, cardAdd, nameInput, occupationInput, profileName, occupationName, avatarEdit, popupAvatar, popupAll} from './constants.js';
+import {formsPopup, settings, popupProfile, editButton, placePopup, cardAdd, nameInput, occupationInput, profileName, occupationName, avatarEdit, popupAvatar, popupAll} from './constants.js';
 import {enableValidation} from './validate.js';
 import {pasteItemes} from './card.js';
-import { renderProfile } from './api.js';
+import { renderProfile, getCards } from './api.js';
 
 import {openPopup, submitAction, closePopup} from './modal.js';
+
+export let userId;
 
   avatarEdit.addEventListener('click', (evt) => {
       openPopup(popupAvatar);
@@ -18,15 +20,17 @@ import {openPopup, submitAction, closePopup} from './modal.js';
     openPopup(popupProfile);
   });
 
-renderProfile().then((result) => {
-  if(result) {
-    avatarEdit.style.backgroundImage = `url(${result.avatar}`;
-    profileName.textContent = result.name;
-    occupationName.textContent = result.about;
-  }
+  Promise.all([renderProfile(), getCards()])
+// тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  .then(([userData, cards]) => {
+    avatarEdit.style.backgroundImage = `url(${userData.avatar}`;
+    profileName.textContent = userData.name;
+    occupationName.textContent = userData.about;
+    userId = userData._id;
+    pasteItemes(cards);
   })
-  .catch((err) => {
-    console.log(err); // выводим ошибку в консоль
+  .catch(err => {
+    console.log(err);
   });
 
 //Перебор массива с карточками. Закрывает попап, вставляет карточку
@@ -43,8 +47,10 @@ popupAll.forEach( (popup) => {
   
   placePopup.addEventListener('click', ()=> openPopup(cardAdd));
 
-  document.addEventListener('submit', submitAction);
+  formsPopup.forEach((el) => {
+    el.addEventListener('submit', submitAction);
+  });
 
-  pasteItemes();
+  
   enableValidation(settings);
   

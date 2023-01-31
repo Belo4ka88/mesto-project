@@ -44,6 +44,7 @@ export const initialCards = [
   
   };
 
+  export const formsPopup = document.querySelectorAll(settings.popupForm);
   //Переменные для рекатирования профиля
   export const popupAll = document.querySelectorAll('.popup');
   export const popupProfile = document.querySelector('.popup_profile-edit');

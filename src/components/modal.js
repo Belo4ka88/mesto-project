@@ -1,5 +1,5 @@
 import { editButtonStatusSave, editButtonStatusDefault } from './utils.js';
-import { avatarEdit, avatarForm, popupAvatar, cardImage, cardDescription, cardPopup, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
+import { avatarEdit, avatarForm, popupAvatar, nameInput, occupationInput, profileName, occupationName, popupProfile, avatarValue, settings  } from './constants.js';
 import { pasteCard } from './card.js';
 import { submitProfileForm, changeAvatar } from './api.js';
 
@@ -14,14 +14,6 @@ export function submitAction(event) {
     return event.target.closest('.popup__avatar') ? editAvatar(button) : editProfile(button);
   }
 }
-    //Функция открыть/закрыть попап карточки
-  
-    export function cardPopupOpen (element) {
-        cardImage.src = element.src;
-        cardImage.alt = element.alt;
-        cardDescription.textContent = element.alt;
-        openPopup(cardPopup);
-      }
      // Открывает Попап
     export function openPopup (element) {
     element.classList.add('popup_opened');
